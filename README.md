@@ -8,6 +8,7 @@ Talentsaurus helps job seekers build the career they want from their skills, exp
 |------|-------------|
 | [`apps/web`](apps/web) | Next.js (App Router) web app: resume PDF upload, profile review, Prisma + PostgreSQL persistence. |
 | [`services/resume-parser`](services/resume-parser) | Spring Boot (Java) REST service: accepts a resume PDF and returns **canonical resume JSON** (Gradle Kotlin DSL). |
+| [`examples/resumes-private`](examples/resumes-private) | **Local-only** PDFs for your own testing (gitignored contents; may contain PII). |
 
 ## Prerequisites
 
@@ -58,6 +59,12 @@ cd services/resume-parser
 ```
 
 More detail: [`services/resume-parser/README.md`](services/resume-parser/README.md).
+
+## Local example resumes (not in git)
+
+Use [`examples/resumes-private`](examples/resumes-private) for real or sensitive PDFs. Only `README.md` and `.gitignore` are tracked; any PDFs you drop there stay on your machine.
+
+Automated tests use small **synthetic** fixtures under `apps/web/tests/fixtures/` and `services/resume-parser/src/test/resources/fixtures/` instead.
 
 ## Direction
 
