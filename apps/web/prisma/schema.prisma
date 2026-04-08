@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  profile       UserProfile?
+  skills        Skill[]
+  experiences   Experience[]
+  educations    Education[]
+  resumeUploads ResumeUpload[]
+}
+
+model UserProfile {
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName    String?
+  headline    String?
+  summary     String?
+  location    String?
+  phone       String?
+  email       String?
+  linkedInUrl String?
+}
+
+model Skill {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name   String
+}
+
+model Experience {
+  id          String  @id @default(cuid())
+  userId      String
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company     String
+  title       String?
+  startDate   String?
+  endDate     String?
+  description String?
+}
+
+model Education {
+  id          String  @id @default(cuid())
+  userId      String
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  institution String
+  degree      String?
+  field       String?
+  startDate   String?
+  endDate     String?
+}
+
+model ResumeUpload {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileName       String
+  mimeType       String
+  extractedText  String   @db.Text
+  parsedSnapshot Json?
+  createdAt      DateTime @default(now())
+}

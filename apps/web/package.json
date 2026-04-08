@@ -1,0 +1,37 @@
+{
+  "name": "talentsaurus",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test:upload": "npm run build && node scripts/test-upload.mjs",
+    "test:smoke:bill-resume": "node --experimental-strip-types scripts/smoke-test-bill-resume.ts",
+    "postinstall": "prisma generate",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.6.0",
+    "next": "^15.5.14",
+    "pdf-parse": "^1.1.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/pdf-parse": "^1.1.4",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "^15.5.14",
+    "pdfkit": "^0.17.2",
+    "postcss": "^8",
+    "prisma": "^6.6.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
