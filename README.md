@@ -9,6 +9,7 @@ Talentsaurus helps job seekers build the career they want from their skills, exp
 | [`apps/web`](apps/web) | Next.js (App Router) web app: resume PDF upload, profile review, Prisma + PostgreSQL persistence. |
 | [`services/resume-parser`](services/resume-parser) | Spring Boot (Java) REST service: accepts a resume PDF and returns **canonical resume JSON** (Gradle Kotlin DSL). |
 | [`services/candidate-profile`](services/candidate-profile) | Spring Boot (Java) REST service: stores and retrieves candidate profiles in SQL by unique ID. |
+| [`services/position`](services/position) | Spring Boot (Java) REST service: stores and retrieves job/position descriptions by unique ID. |
 | [`examples/resumes-private`](examples/resumes-private) | **Local-only** PDFs for your own testing (gitignored contents; may contain PII). |
 
 ## Prerequisites
@@ -16,6 +17,7 @@ Talentsaurus helps job seekers build the career they want from their skills, exp
 - **Web app:** Node.js and npm, plus a running **PostgreSQL** instance.
 - **Resume parser:** **Java 21** (for example Homebrew `openjdk@21`).
 - **Candidate profile service:** **Java 21** (uses H2 SQL DB by default).
+- **Position service:** **Java 21** (uses H2 SQL DB by default).
 
 ## Web app (`apps/web`)
 
@@ -130,6 +132,56 @@ cd services/candidate-profile
 ./gradlew test
 ```
 
+## Position service (`services/position`)
+
+```bash
+cd services/position
+./gradlew bootRun
+```
+
+Default port: **8083** (see `application.properties`).
+
+Endpoints:
+- `POST /api/v1/positions` — create a position description; returns unique `id`.
+- `GET /api/v1/positions/{id}` — retrieve position description by ID.
+
+Create position example:
+
+```bash
+curl -X POST "http://localhost:8083/api/v1/positions" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company": "Acme Corp",
+    "title": "Senior Backend Engineer",
+    "responsibilities": [
+      "Design scalable APIs",
+      "Mentor engineering team"
+    ],
+    "requiredSkills": [
+      "Java",
+      "Spring Boot",
+      "SQL"
+    ],
+    "preferredSkills": [
+      "Kubernetes",
+      "AWS"
+    ]
+  }'
+```
+
+Retrieve position by ID:
+
+```bash
+curl "http://localhost:8083/api/v1/positions/<position-id>"
+```
+
+Run tests:
+
+```bash
+cd services/position
+./gradlew test
+```
+
 ## Manual testing checklist
 
 ### Resume parser (`8081`)
@@ -148,6 +200,14 @@ cd services/candidate-profile
   - `GET /api/v1/candidates/{id}` -> expect stored payload.
 - Error path:
   - random/nonexistent UUID -> expect `404` + `"Candidate not found"`.
+
+### Position service (`8083`)
+- Start service: `cd services/position && ./gradlew bootRun`
+- Happy path:
+  - `POST /api/v1/positions` with JSON body -> expect `201` and `id`.
+  - `GET /api/v1/positions/{id}` -> expect stored payload.
+- Error path:
+  - random/nonexistent UUID -> expect `404` + `"Position not found"`.
 
 ## Local example resumes (not in git)
 
