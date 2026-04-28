@@ -8,12 +8,14 @@ Talentsaurus helps job seekers build the career they want from their skills, exp
 |------|-------------|
 | [`apps/web`](apps/web) | Next.js (App Router) web app: resume PDF upload, profile review, Prisma + PostgreSQL persistence. |
 | [`services/resume-parser`](services/resume-parser) | Spring Boot (Java) REST service: accepts a resume PDF and returns **canonical resume JSON** (Gradle Kotlin DSL). |
+| [`services/candidate-profile`](services/candidate-profile) | Spring Boot (Java) REST service: stores and retrieves candidate profiles in SQL by unique ID. |
 | [`examples/resumes-private`](examples/resumes-private) | **Local-only** PDFs for your own testing (gitignored contents; may contain PII). |
 
 ## Prerequisites
 
 - **Web app:** Node.js and npm, plus a running **PostgreSQL** instance.
 - **Resume parser:** **Java 21** (for example Homebrew `openjdk@21`).
+- **Candidate profile service:** **Java 21** (uses H2 SQL DB by default).
 
 ## Web app (`apps/web`)
 
@@ -49,6 +51,13 @@ curl -X POST "http://localhost:8081/api/v1/resume/parse" \
   -F "file=@/path/to/resume.pdf"
 ```
 
+Optional page-range parsing for bundled PDFs (1-based, inclusive):
+
+```bash
+curl -X POST "http://localhost:8081/api/v1/resume/parse?startPage=3&endPage=3" \
+  -F "file=@/path/to/bundled-resumes.pdf"
+```
+
 Response is JSON: `profile`, `skills`, `experiences`, `educations`, and `parseMeta` (sections detected, counts, warnings).
 
 Run tests:
@@ -59,6 +68,86 @@ cd services/resume-parser
 ```
 
 More detail: [`services/resume-parser/README.md`](services/resume-parser/README.md).
+
+## Candidate profile service (`services/candidate-profile`)
+
+```bash
+cd services/candidate-profile
+./gradlew bootRun
+```
+
+Default port: **8082** (see `application.properties`).
+
+Endpoints:
+- `POST /api/v1/candidates` — create candidate profile; returns unique `id`.
+- `GET /api/v1/candidates/{id}` — retrieve candidate profile by ID.
+
+Create candidate example:
+
+```bash
+curl -X POST "http://localhost:8082/api/v1/candidates" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "fullName": "Jane Candidate",
+    "email": "jane@example.com",
+    "phone": "(555) 000-1111",
+    "location": "Ann Arbor, MI",
+    "summary": "Full-stack engineer",
+    "skills": [{"name": "Java"}, {"name": "Spring Boot"}],
+    "experiences": [{
+      "company": "Acme Corp",
+      "title": "Software Engineer",
+      "startDate": "January 2022",
+      "endDate": "Present",
+      "description": "Built APIs"
+    }],
+    "educations": [{
+      "institution": "State University",
+      "degree": "Bachelor of Science",
+      "field": "Computer Science",
+      "startDate": "2018",
+      "endDate": "2022"
+    }],
+    "references": [{
+      "fullName": "Alex Manager",
+      "relationship": "Manager",
+      "email": "alex@example.com",
+      "phone": "(555) 000-2222"
+    }]
+  }'
+```
+
+Retrieve candidate by ID:
+
+```bash
+curl "http://localhost:8082/api/v1/candidates/<candidate-id>"
+```
+
+Run tests:
+
+```bash
+cd services/candidate-profile
+./gradlew test
+```
+
+## Manual testing checklist
+
+### Resume parser (`8081`)
+- Start service: `cd services/resume-parser && ./gradlew bootRun`
+- Happy path: upload a valid PDF to `POST /api/v1/resume/parse`.
+- Page-range path: call with `?startPage=N&endPage=M`.
+- Error path:
+  - send non-PDF file -> expect `400` + `"Only PDF files are supported"`
+  - send empty PDF part -> expect `400` + `"File is empty"`
+  - send only one of `startPage` / `endPage` -> expect `400`.
+
+### Candidate profile (`8082`)
+- Start service: `cd services/candidate-profile && ./gradlew bootRun`
+- Happy path:
+  - `POST /api/v1/candidates` with JSON body -> expect `201` and `id`.
+  - `GET /api/v1/candidates/{id}` -> expect stored payload.
+- Error path:
+  - random/nonexistent UUID -> expect `404` + `"Candidate not found"`.
 
 ## Local example resumes (not in git)
 
