@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.talentsaurus.candidateprofile.candidate.web.CandidateProfileApiIntegrationTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-04-28T16:25:30.972Z" hostname="Williams-MacBook-Pro.local" time="0.165">
+  <properties/>
+  <testcase name="createAndRetrieveCandidateById()" classname="com.talentsaurus.candidateprofile.candidate.web.CandidateProfileApiIntegrationTest" time="0.151"/>
+  <testcase name="getMissingCandidateReturns404()" classname="com.talentsaurus.candidateprofile.candidate.web.CandidateProfileApiIntegrationTest" time="0.005"/>
+  <system-out><![CDATA[2026-04-28T12:25:30.973-04:00  INFO 27608 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.talentsaurus.candidateprofile.candidate.web.CandidateProfileApiIntegrationTest]: CandidateProfileApiIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-04-28T12:25:30.977-04:00  INFO 27608 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.talentsaurus.candidateprofile.CandidateProfileApplication for test class com.talentsaurus.candidateprofile.candidate.web.CandidateProfileApiIntegrationTest
+2026-04-28T12:25:30.978-04:00  INFO 27608 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.talentsaurus.candidateprofile.candidate.web.CandidateProfileApiIntegrationTest]: CandidateProfileApiIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-04-28T12:25:30.978-04:00  INFO 27608 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.talentsaurus.candidateprofile.CandidateProfileApplication for test class com.talentsaurus.candidateprofile.candidate.web.CandidateProfileApiIntegrationTest
+2026-04-28T12:25:30.985-04:00  INFO 27608 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-04-28T12:25:30.986-04:00  INFO 27608 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-04-28T12:25:30.987-04:00  INFO 27608 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-04-28T12:25:31.132-04:00  INFO 27608 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-04-28T12:25:31.132-04:00  INFO 27608 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-04-28T12:25:31.133-04:00  INFO 27608 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
