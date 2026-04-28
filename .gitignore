@@ -3,3 +3,4 @@
 # Local resume PDFs (may contain PII). See examples/resumes-private/README.md
 examples/resumes-private/**
 !examples/resumes-private/README.md
+!examples/resumes-private/NOTCURRENTLYPARSED.md

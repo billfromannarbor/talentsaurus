@@ -17,7 +17,22 @@ public class ResumeParsingService {
   }
 
   public CanonicalResume parse(MultipartFile file) throws IOException {
-    String text = pdfTextExtractor.extract(file.getBytes());
+    return parse(file.getBytes(), null, null);
+  }
+
+  /**
+   * @param startPageOneBased inclusive first page, or {@code null} for full document
+   * @param endPageOneBased inclusive last page, or {@code null} for full document
+   */
+  public CanonicalResume parse(byte[] pdfBytes, Integer startPageOneBased, Integer endPageOneBased)
+      throws IOException {
+    if ((startPageOneBased == null) != (endPageOneBased == null)) {
+      throw new IllegalArgumentException("startPage and endPage must both be set or both null");
+    }
+    String text =
+        startPageOneBased == null
+            ? pdfTextExtractor.extract(pdfBytes)
+            : pdfTextExtractor.extract(pdfBytes, startPageOneBased, endPageOneBased);
     return resumeTextParser.parse(text);
   }
 }

@@ -1,0 +1,46 @@
+{
+  "profile": {
+    "fullName": "Jane Doe",
+    "headline": "Software Engineer",
+    "summary": "Backend engineer with focus on APIs and reliability.",
+    "location": "Ann Arbor, MI",
+    "phone": "(734) 555-0100",
+    "email": "jane@example.com",
+    "linkedInUrl": "https://www.linkedin.com/in/janedoe",
+    "githubUrl": null
+  },
+  "skills": [
+    { "name": "Java" },
+    { "name": "Kotlin" }
+  ],
+  "experiences": [
+    {
+      "company": "Acme Corp",
+      "title": "Senior Engineer",
+      "startDate": "June 2020",
+      "endDate": "Present",
+      "description": "Built REST APIs"
+    }
+  ],
+  "educations": [
+    {
+      "institution": "State University",
+      "degree": "Bachelor of Science in Computer Science",
+      "field": "Computer Science",
+      "startDate": null,
+      "endDate": null
+    }
+  ],
+  "parseMeta": {
+    "sectionsDetected": [
+      "Professional Summary",
+      "Technical Skills",
+      "Professional Experience",
+      "Education"
+    ],
+    "skillCount": 2,
+    "experienceCount": 1,
+    "educationCount": 1,
+    "warnings": []
+  }
+}

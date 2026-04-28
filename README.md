@@ -66,6 +66,8 @@ Use [`examples/resumes-private`](examples/resumes-private) for real or sensitive
 
 Automated tests use small **synthetic** fixtures under `apps/web/tests/fixtures/` and `services/resume-parser/src/test/resources/fixtures/` instead.
 
+To validate your own PDF + expected JSON pairs locally, use `./gradlew privateGoldenTests` from `services/resume-parser` (see `examples/resumes-private/README.md`).
+
 ## Direction
 
 The web app currently parses PDFs in-process for the first vertical slice. The resume-parser service is the home for **shared, testable parsing** and future REST boundaries as you grow more services.

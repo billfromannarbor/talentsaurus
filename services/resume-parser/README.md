@@ -47,3 +47,13 @@ cd services/resume-parser
 - **Unit:** `PdfTextExtractorTest` — extracts text from an in-memory PDF built by `TestPdfFixtures`.
 - **Integration:** `ResumeParserApiIntegrationTest` — `POST /api/v1/resume/parse` with a generated PDF; asserts JSON shape and error responses for bad uploads.
 - **Integration:** `WebSamplePdfIntegrationTest` — same endpoint with `src/test/resources/fixtures/web-sample.pdf` (same asset as `apps/web/tests/fixtures/sample.pdf`); asserts known profile fields from that fixture.
+
+### Private PDF goldens (local, opt-in)
+
+If you keep `name.pdf` + `name.json` pairs under `examples/resumes-private/` (monorepo root), you can validate them against the parser:
+
+```bash
+./gradlew privateGoldenTests
+```
+
+Plain `./gradlew test` does **not** run this (see `PrivateResumeGoldenFilesTest`). See `examples/resumes-private/README.md`.

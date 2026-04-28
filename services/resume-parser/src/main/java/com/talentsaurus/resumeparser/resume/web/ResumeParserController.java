@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +27,11 @@ public class ResumeParserController {
   }
 
   @PostMapping(path = "/parse", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> parse(@RequestPart("file") @NotNull MultipartFile file) throws IOException {
+  public ResponseEntity<?> parse(
+      @RequestPart("file") @NotNull MultipartFile file,
+      @RequestParam(required = false) Integer startPage,
+      @RequestParam(required = false) Integer endPage)
+      throws IOException {
     if (file.isEmpty()) {
       return ResponseEntity.badRequest().body(Map.of("error", "File is empty"));
     }
@@ -38,7 +43,15 @@ public class ResumeParserController {
       return ResponseEntity.badRequest().body(Map.of("error", "Only PDF files are supported"));
     }
 
-    CanonicalResume resume = resumeParsingService.parse(file);
+    if ((startPage == null) != (endPage == null)) {
+      return ResponseEntity.badRequest()
+          .body(Map.of("error", "startPage and endPage must be sent together (1-based, inclusive)"));
+    }
+
+    CanonicalResume resume =
+        startPage == null
+            ? resumeParsingService.parse(file)
+            : resumeParsingService.parse(file.getBytes(), startPage, endPage);
     return ResponseEntity.ok(resume);
   }
 }
