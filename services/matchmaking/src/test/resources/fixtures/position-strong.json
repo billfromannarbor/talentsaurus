@@ -1,0 +1,11 @@
+{
+  "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "company": "TopCo",
+  "title": "Senior Backend Engineer",
+  "responsibilities": [
+    "Design scalable REST APIs for backend platforms",
+    "Collaborate with cross-functional teams to ship services"
+  ],
+  "requiredSkills": ["Java", "Spring Boot", "SQL"],
+  "preferredSkills": ["AWS", "Docker"]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+  "company": "GrowthCo",
+  "title": "Platform Engineer",
+  "responsibilities": [
+    "Design REST APIs for internal platforms",
+    "Collaborate with cross-functional teams"
+  ],
+  "requiredSkills": ["Java", "Kotlin"],
+  "preferredSkills": ["AWS", "Kubernetes"]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+  "company": "LegacyCo",
+  "title": "Windows Platform Engineer",
+  "responsibilities": [
+    "Administer Windows servers and Active Directory",
+    "Support desktop imaging and SCCM workflows"
+  ],
+  "requiredSkills": ["C#", ".NET", "Azure"],
+  "preferredSkills": ["PowerShell", "Terraform"]
+}

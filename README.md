@@ -10,6 +10,7 @@ Talentsaurus helps job seekers build the career they want from their skills, exp
 | [`services/resume-parser`](services/resume-parser) | Spring Boot (Java) REST service: accepts a resume PDF and returns **canonical resume JSON** (Gradle Kotlin DSL). |
 | [`services/candidate-profile`](services/candidate-profile) | Spring Boot (Java) REST service: stores and retrieves candidate profiles in SQL by unique ID. |
 | [`services/position`](services/position) | Spring Boot (Java) REST service: stores and retrieves job/position descriptions by unique ID. |
+| [`services/matchmaking`](services/matchmaking) | Spring Boot (Java) REST service: fetches candidate + position and returns a fit score/explanation. |
 | [`examples/resumes-private`](examples/resumes-private) | **Local-only** PDFs for your own testing (gitignored contents; may contain PII). |
 
 ## Prerequisites
@@ -18,6 +19,7 @@ Talentsaurus helps job seekers build the career they want from their skills, exp
 - **Resume parser:** **Java 21** (for example Homebrew `openjdk@21`).
 - **Candidate profile service:** **Java 21** (uses H2 SQL DB by default).
 - **Position service:** **Java 21** (uses H2 SQL DB by default).
+- **Matchmaking service:** **Java 21** (calls candidate-profile + position services).
 
 ## Web app (`apps/web`)
 
@@ -182,6 +184,40 @@ cd services/position
 ./gradlew test
 ```
 
+## Matchmaking service (`services/matchmaking`)
+
+```bash
+cd services/matchmaking
+./gradlew bootRun
+```
+
+Default port: **8084** (see `application.properties`).
+
+Depends on:
+- `candidate-profile` at `http://localhost:8082`
+- `position` at `http://localhost:8083`
+
+Endpoint:
+- `POST /api/v1/matchmaking/match` — computes fit score from candidate + position IDs.
+
+Match example:
+
+```bash
+curl -X POST "http://localhost:8084/api/v1/matchmaking/match" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "candidateId": "11111111-1111-1111-1111-111111111111",
+    "positionId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+  }'
+```
+
+Run tests:
+
+```bash
+cd services/matchmaking
+./gradlew test
+```
+
 ## Manual testing checklist
 
 ### Resume parser (`8081`)
@@ -208,6 +244,17 @@ cd services/position
   - `GET /api/v1/positions/{id}` -> expect stored payload.
 - Error path:
   - random/nonexistent UUID -> expect `404` + `"Position not found"`.
+
+### Matchmaking service (`8084`)
+- Start dependencies first:
+  - `cd services/candidate-profile && ./gradlew bootRun`
+  - `cd services/position && ./gradlew bootRun`
+  - `cd services/matchmaking && ./gradlew bootRun`
+- Happy path:
+  - `POST /api/v1/matchmaking/match` with candidate + position IDs -> expect `200` + score/recommendation.
+- Error path:
+  - missing candidate ID -> expect `404` + `"Candidate not found"`.
+  - missing position ID -> expect `404` + `"Position not found"`.
 
 ## Local example resumes (not in git)
 
